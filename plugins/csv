@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+sqy_directory=$1
+file=$2
+query=${3:-"select * from result"}
+
+sqlite3 -header ":memory:" <<<$(printf "%s\n%s %s %s \n%s\n%s\n" ".mode csv" ".import" "${file}" "result" ".mode list" "${query}")

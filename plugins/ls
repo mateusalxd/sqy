@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+sqy_directory=$1
+directory=${2:-.}
+query=${3:-"select * from result"}
+mode=".mode list"
+
+table="create table result (permissions text, links int, owner_name text, group_name text, size int, modified date, name text);"
+inserts="insert into result (permissions, links, owner_name, group_name, size, modified, name) values"
+values=$(ls --time-style=long-iso -lA ${directory} | tail -n +2 | awk -f ${sqy_directory}/plugins/ls.awk | sed 's/,;$/;/')
+sqlite3 -header ":memory:" <<<$(printf "%s %s %s\n%s\n%s" "${table}" "${inserts}" "${values}" "${mode}" "${query}")

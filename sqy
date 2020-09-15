@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+sqy_directory=$(dirname $0)
+command=$1
+"${sqy_directory}/plugins/${command}" "${sqy_directory}" "${2}" "${3}"
