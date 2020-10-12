@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+sqy_directory=$1
+directory=${2:-.}
+query=${3:-"select * from result"}
+mode=".mode list"
+
+table="create table result (size int, directory text);"
+inserts="insert into result (size, directory) values"
+values=$(du ${directory} | awk -f ${sqy_directory}/plugins/du.awk | sed 's/,;$/;/')
+sqlite3 -header ":memory:" <<<$(printf "%s %s %s\n%s\n%s" "${table}" "${inserts}" "${values}" "${mode}" "${query}")
